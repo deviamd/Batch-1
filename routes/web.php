@@ -18,16 +18,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+// Route::get('/', function () {
+//    return view('users.user.welcome');
+// });
 
 // Route::resource('merchant', MerchantController:class);
 // Route::resource('product', ProductController:class)->except('create', 'edit');
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controller\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::get('/user', [App\Http\Controllers\UserControllers:class, 'index'])->name('user,'index');
 
 Route::prefix('user')->name('user.')->group(function() {

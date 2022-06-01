@@ -19,7 +19,7 @@ class Merchant extends Model
         'status',
     ];
 
-    public function merchant() {
-        return $this->hasMany::class);
+    public function product() {
+        return $this->hasMany(Product::class);
     }
 }
