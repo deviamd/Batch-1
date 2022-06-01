@@ -7,54 +7,79 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+    // Menampilkan semua data yang ada di tabel
     public function index() {
         $data = product::all();
 
-        return response($data, 200);
+        return view('users.product.index', [
+            'product' => $data,
+        ]);
     }
 
-
+    // Melakukan penyimpanan/pembuatan data baru ke data tabel
     public function store(Request $request) {
+        $request->validate([
+            'name' => ['required'],
+            'category' => ['required'],
+            'thumbnail_image' => ['required'],
+        ]);
 
-        $products = new product();
+        $product = new Product();
 
-        $products->name = $request->name;
-        $products->category = $request->category;
-        $products->thumbnail_image = $request->thumbnail_image ?? 'image.jpg';
+        $product->name = $request->name;
+        $product->category = $request->category;
+        $product->thumbnail_image = $request->thumbnail_image ?? 'image.jpg';
+        $product->merchant_id = $request->merchant_id ?? 1;
 
-        $products->save();
+        $product->save();
 
-        return response($products, 200);
+        return response($product, 200);
     }
 
+    // Mengarahkan ke halaman create
+    public function create() {
+        return view("users.product.create");
+    }
 
+    // Melakukan pembaharuan data
     public function update(Request $request, $id) {
+        $request->validate([
+            'name' => ['required'],
+            'category' => ['required'],
+            'thumbnail_image' => ['required'],
+        ]);
 
-        $products = Product::findorfail($id);
+        $product = Product::findorFail($id);
 
-        $products->name = $request->name;
-        $products->category = $request->category;
-        $products->thumbnail_image = $request->thumbnail_image ?? 'image.jpg';
+        $product->name = $request->name;
+        $product->category = $request->category;
+        $product->thumbnail_image = $request->thumbnail_image ?? 'image.jpg';
 
         $products->save();
 
-        return response($products, 200);
+        return response()->back();
     }
 
-    public function show ($id) {
-
-        $products = Product::findOrFail($id);
-
-        return response($products, 200);
+    // Mengarahkan ke halaman edit
+    public function edit(Product $product) {
+        return view('user.product.edit', [
+            'product' => $product,
+        ]);
     }
 
+    // Menampilkan salah satu data di dalam tabel
+    public function show($id) {
+        $product = Product::findOrFail($id);
+
+        return response($product, 200);
+    }
+
+    //Melakukan penghapusan salah satu data di dalam tabel
     public function destroy($id) {
+        $product = Product::findOrFail($id);
 
-        $products = Product::findOrFail($id);
+        $product->delete();
 
-        $products->delete();
-
-        return response('Data Berhasil Dihapus!', 200);
-
+        return response()->back();
     }
 }

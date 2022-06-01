@@ -18,5 +18,8 @@ class Products extends Model
         'photo_profile',
         'status',
     ];
-}
 
+    public function merchant() {
+        return $this->belongsTo(Merchant::class);
+    }
+}

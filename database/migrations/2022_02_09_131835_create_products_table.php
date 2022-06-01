@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('category');
             $table->string('thumbnail_image');
             $table->boolean('status')->default(1);
+            $table->foreignId('merchant_id')->references('id')->on('merchants');
             $table->timestamps();
         });
     }

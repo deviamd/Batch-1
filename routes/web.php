@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Routing\RouteUri;
 use Illuminate\Support\Facades\Route;
 
@@ -17,34 +18,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-// Route::get('/home', [HomeController::class, 'index']);
-
-// Route::get('/merchant', [MerchantController::class, 'index']);
-// Route::post('/merchant', [MerchantController::class, 'store']);
-// Route::put('/merchant/{id}/update', [MerchantController::class, 'update']);
-// Route::get('/merchant/{id}', [MerchantController::class, 'show']);
-// Route::delete('/merchant/{id}', [MerchantController::class, 'destroy']);
-
-Route::resource('merchant', MerchantController::class)->except('create', 'edit');
-
-// Route::get('/product', [ProductController::class, 'index']);
-// Route::post('/product', [ProductController::class, 'store']);
-// Route::put('/product/{id}/update', [ProductController::class, 'update']);
-// Route::get('/product/{id}', [ProductController::class, 'show']);
-// Route::delete('/product/{id}', [ProductController::class, 'destroy']);
-
-Route::resource('product', ProductController::class)->except('create', 'edit');
+// Route::resource('merchant', MerchantController:class);
+// Route::resource('product', ProductController:class)->except('create', 'edit');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controller\HomeController::class, 'index'])->name('home');
+//Route::get('/user', [App\Http\Controllers\UserControllers:class, 'index'])->name('user,'index');
 
-// Route::group(['middleware' => ['auth']], function() {
-//     Route::resource('merchant', MerchantController::class)->except('create', 'edit');
+Route::prefix('user')->name('user.')->group(function() {
 
-//     Route::resource('product', ProductController::class)->except('create', 'edit');
-// });
+    Route::middleware(['auth:web'])->group(function() {
+
+        //Route:get('/, [App\Http\Controllers\UserControllers::class, 'index'])->name('home');
+
+        Route::resource('merchant', MerchantController::class);
+        Route::resource('product', ProductController::class);
+
+        Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('index');
+    });
+});

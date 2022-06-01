@@ -18,4 +18,8 @@ class Merchant extends Model
         'photo_profile',
         'status',
     ];
+
+    public function merchant() {
+        return $this->hasMany::class);
+    }
 }
